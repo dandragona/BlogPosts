@@ -20,7 +20,7 @@
 \begin{enumerate}
     \item The goal of this post is to give an introduction to combinators. Informally, combinators are functions that manipulate and combine other functions to produce a new function. Unfortunately, before we give a formal definition to these combinators, we must learn a few things.
     
-    \item Insert \textbf{Lambda Calculus}. $\lambda$-Calculus is a system for devising computation. The formality of this system allows programming languages to be studied at a higher level. //For those interested, lambda calculus is a cartesian closed category, and so the study of a lambda calculus inherits many tools from many different mathematical areas.// Lambda calculus has been proven to be Turing Complete, and so any programming language that is Turing Complete can be simulated using $\lambda$-Calculus.  
+    \item Insert \textbf{Lambda Calculus}. $\lambda$-Calculus is a system for devising computation. The formality of this system allows the study of lambda calculus to inherit many tools from different mathematical areas. Lambda calculus has been proven to be Turing Complete, and so any programming language that is Turing Complete can be simulated using $\lambda$-Calculus.  
     \par Okay, now we must learn what exactly $\lambda$-Calculus is. There are 3 rules:
     
     \begin{itemize}
@@ -34,7 +34,7 @@
 Now we get to learn how these rules work with everybody's favorite learning method, examples!
 \item The first rule is about variables, so we will create two variables $\mathbf{x}$ and $\mathbf{y}$. Think of these in terms of math declarations, so if we have a function $f(\mathbf{x})$ then the $\mathbf{x}$ we just created will be the variable that $f$ is acting upon. Similarly for the variable $\mathbf{y}$ in the function $g(\mathbf{y})$.
 
-\item Now onto the second rule about $\lambda$-abstractions. Directly above we just created these two variables $x$ and $y$ but we never actually created the functions $f$ and $g$. Well what good are variables if nothing is using them. Insert $\lambda$-abstractions, the $f$ in the rule definition is essentially a function, and so $\lambda x.f$ is the function $\mathbf{f}$ acting upon the variable $\mathbf{x}$. 
+\item Now onto the second rule: $\boldsymbol{\lambda}$\textbf{-abstractions}. Directly above we just created these two variables $x$ and $y$, but we never actually created the functions $\mathbf{f}$ and $\mathbf{g}$. Well what good are these variables if nothing is using them. Insert $\lambda$-abstractions, if \textbf{f} is a valid $\lambda$-Calculus term, and $\mathbf{x}$ is a valid variable, then $\boldsymbol{\lambda}\mathbf{x. f}$ is a valid term. The $f$ in the rule definition is essentially a function of x, and so $\lambda x.f$ is the function $\mathbf{f(x)}$. 
 \begin{center}
 $\lambda x.f$ $\quad$ $\Rightarrow$ $\quad$ $f(x)$ 
 \end{center}
@@ -43,7 +43,9 @@ $\lambda x.f$ $\quad$ $\Rightarrow$ $\quad$ $f(x)$
 \begin{itemize}
 \item Take the $\lambda$-abstraction $\lambda x.x + x$. This is a function that takes a variable $x$ and returns $x+x$ or $2x$. Then the application of this abstraction with the variable $y$ would take $x$ and substitute in the variable $y$. This is illustrated by: 
 \begin{center}
-$(\lambda x.x + x)y$ $\quad$ $\rightarrow$ $\quad$ $f(x) = 2x$ $\quad$ $\rightarrow$ $\quad$ $f(y) = 2y$
+$(\lambda x.x + x)y \ = \ (x + x)[x:=y] \ = \ y + y$
+\vspace{3mm}
+\\$f(x) = 2x \ = \ $  $f(x:=y) = 2(x:=y) \ = 2(y)$
 \end{center}
 \item You can apply lambda functions with more than just variables too. Take the $\lambda$-abstraction $\lambda x.x$ $x$. We can apply this with many different abstractions, but for now lets apply it with itself. 
 \begin{center}$(\lambda x.x$ $x)$ $(\lambda x.x$ $x)$ $\quad$ $\rightarrow$ $\quad$ $(\lambda x.x$ $x)$ $[x := (\lambda x.x$ $x)]$
