@@ -1,0 +1,22 @@
+Explain combinator examples from slides
+Background of combinators
+Motivation for combinators
+Explain lambda calc
+Currying
+
+fix with fibonacci
+https://medium.com/@ayanonagon/the-y-combinator-no-not-that-one-7268d8d9c46#.pgxlpafsq
+
+
+
+
+
+Variable capture problem
+http://www.cmi.ac.in/~madhavan/courses/pl2009/lecturenotes/lecture-notes/node85.html
+
+
+http://wayback.archive.org/web/20160304083208/http://tromp.github.io/cl/LC.pdf 
+Explain chapter 3
+
+Scope
+Currying
