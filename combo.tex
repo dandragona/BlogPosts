@@ -57,7 +57,7 @@ $f(x) = 2x \ = \ $  $f(x:=y) = 2(x:=y) \ = 2(y)$
 This is an interesting example because we can see with an application such as this, the application never reduces or simplifies. We will discuss applications like this later.
 \item The last example shall serve as a segue into our next topic that we must learn for our ultimate goal of understanding combinators. Take the application $(\lambda x. y)z$. \par This is an abstraction that takes a variable $x$ and returns the variable $y$. In lambda calculus, there is no such thing as variable declaration, i.e. we don't know explicitly what $x$ or $y$ are, but we do know that this given abstraction does not use the $x$ variable, because it always just returns this unknown $y$ variable. 
 \begin{center}
-$(\lambda x.y)(z)$ $\quad \rightarrow \quad$ $y[x:=z]$ $\quad \Rightarrow \quad$ $f(x) = y$ $\quad \rightarrow \quad$ $f(z) = y$
+$(\lambda x.y)(z)$ $\quad \rightarrow \quad$ $y[x:=z]$ $\quad \equiv \quad$ $f(x) = y$ $\quad \rightarrow \quad$ $f(z) = y$
 \end{center}
 \end{itemize}
 
