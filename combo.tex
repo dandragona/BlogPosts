@@ -90,20 +90,20 @@ $(\lambda x.y)(z)$ $\quad \rightarrow \quad$ $y[x:=z]$ $\quad \Rightarrow \quad$
 \end{itemize}
 We saw earlier how this application never stops, or never reduces. $\lambda$-expressions are not guaranteed to reduce. We can think about this in a programming sense as non-terminating recursion. In this view we also see that each step of $\beta$-reduction can be interpreted as a step of computation. The motivation behind $\beta$-reduction is that it shows that some $\lambda$ expressions are equivalent, such as the earlier example with function $\phi(x)$ being equivalent to $g(x)$.
 
-\item Well we are finally here! We now have all the necessary knowledge to formally learn about combinators. \textbf{Combinators} are functions that possess only bound variables. Combinators do not have free variables. These functions produced a field of study called Combinatory Logic. An interesting fact about $\lambda$-Calculus is that although every lambda function is created by means of abstraction and application, abstraction is not required. Because of this fact, a similar calculus called combinatorial calculus was created. This calculus is computationally equivalent to $\lambda$-Calculus and thus Turing Complete, but only relies on combinators for means of computation. There are many different important combinators that we will now discuss.
-\begin{itemize}
-\item The identity combinator, $\mathbf{I}$. $\lambda x.x$. If we apply this combinator with any term $t$ then we get $t$ back. This combinator is usually denoted as $I x = x$ or $I(x) = x$.
-\item The next combinator is the constant combinator, $\mathbf{K}$. $\mathbf{K} = \lambda x.(\lambda y.x)$. This combinator takes two arguments $x$ and $y$, and returns $x$ regardless of what the argument $y$ is. This is why it is referred to as the constant combinator. For all terms $x$ and $y$ in the lambda calculus, $\mathbf{K}\,x\,y = x$ or in alternative notation $\mathbf{K}(x,y) = x$.
-\item The third combinator that we will cover is the substitution combinator, $\mathbf{S} = \lambda x.[\lambda y.[\lambda z.(xz)(yz)]]$. This combinator takes three arguments,$x,y,z$, and begins by applying the first two arguments with the third and then combines these two results. We need this combinator to make up for the lack of the abstraction tool in our combinatorial calculus. ????NOT SURE IF THIS IS TRUE THIS IS JUST A GUESS(need to check with fontaine)???? The reason why \textbf{S} is able to help us is that our current calculus is left associative, but certain computations require right associativity. Without \textbf{S} we could attempt to create the result of this combinator with just $xzyz$, but by association this would become $(((xz)y)z)$.
-\item We can solve this abstraction issue with different combinators though. Consider X(X(X(XX))) = X(X(X[(((xS)KS)K)]
-[((((XS)KS)KS)KS]K
+%\item Well we are finally here! We now have all the necessary knowledge to formally learn about combinators. \textbf{Combinators} are functions that possess only bound variables. Combinators do not have free variables. These functions produced a field of study called Combinatory Logic. An interesting fact about $\lambda$-Calculus is that although every lambda function is created by means of abstraction and application, abstraction is not required. Because of this fact, a similar calculus called combinatorial calculus was created. This calculus is computationally equivalent to $\lambda$-Calculus and thus Turing Complete, but only relies on combinators for means of computation. There are many different important combinators that we will now discuss.
+%\begin{itemize}
+%\item The identity combinator, $\mathbf{I}$. $\lambda x.x$. If we apply this combinator with any term $t$ then we get $t$ back. This combinator is usually denoted as $I x = x$ or $I(x) = x$.
+%\item The next combinator is the constant combinator, $\mathbf{K}$. $\mathbf{K} = \lambda x.(\lambda y.x)$. This combinator takes two arguments $x$ and $y$, and returns $x$ regardless of what the argument $y$ is. This is why it is referred to as the constant combinator. For all terms $x$ and $y$ in the lambda calculus, $\mathbf{K}\,x\,y = x$ or in alternative notation $\mathbf{K}(x,y) = x$.
+%\item The third combinator that we will cover is the substitution combinator, $\mathbf{S} = \lambda x.[\lambda y.[\lambda z.(xz)(yz)]]$. This combinator takes three arguments,$x,y,z$, and begins by applying the first two arguments with the third and then combines these two results. We need this combinator to make up for the lack of the abstraction tool in our combinatorial calculus. ????NOT SURE IF THIS IS TRUE THIS IS JUST A GUESS(need to check with fontaine)???? The reason why \textbf{S} is able to help us is that our current calculus is left associative, but certain computations require right associativity. Without \textbf{S} we could attempt to create the result of this combinator with just $xzyz$, but by association this would become $(((xz)y)z)$.
+%\item We can solve this abstraction issue with different combinators though. Consider X(X(X(XX))) = X(X(X[(((xS)KS)K)]
+%[((((XS)KS)KS)KS]K
 
-\item
-\begin{center}
+%\item
+%\begin{center}
 
 
-\end{center}
-\end{itemize}
+%\end{center}
+%\end{itemize}
 
 
 \end{enumerate}
