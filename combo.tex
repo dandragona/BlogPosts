@@ -47,7 +47,7 @@ $(\lambda x.x + x)y \ = \ (x + x)[x:=y] \ = \ y + y$
 \vspace{3mm}
 \\$f(x) = 2x \ = \ $  $f(x:=y) = 2(x:=y) \ = 2(y)$
 \end{center}
-\item You can apply lambda functions with more than just variables too. Take the $\lambda$-abstraction $\lambda x.x$ $x$. We can apply this with many different abstractions, but for now lets apply it with itself. 
+\item You can apply lambda functions with more than just variables too. Take the $\lambda$-abstraction $(\lambda x.x\,x)$. We can apply this with many different abstractions, but for now lets apply it with itself. 
 \begin{align*}
 (\lambda x.x x) (\lambda x.x x)\quad &= \quad (\lambda x.x x) [x := (\lambda x.x x)]
 &= \quad (\lambda x.x x) (\lambda x.x x)
