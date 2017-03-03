@@ -1,0 +1,109 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+
+\renewcommand\qedsymbol{\Phi}
+
+\begin{document}
+
+\begin{center}
+{\Large Combinators}\\
+\text{Daniel Mandragona}\\ %You should put your name here
+02/22/17 %You should write the date here.
+\end{center}
+
+\begin{enumerate}
+    \item The goal of this post is to give an introduction to combinators. Informally, combinators are functions that manipulate and combine other functions to produce a new function. Unfortunately, before we give a formal definition to these combinators, we must learn a few things.
+    
+    \item Insert \textbf{Lambda Calculus}. $\lambda$-Calculus is a system for devising computation. The formality of this system allows programming languages to be studied at a higher level. //For those interested, lambda calculus is a cartesian closed category, and so the study of a lambda calculus inherits many tools from many different mathematical areas.// Lambda calculus has been proven to be Turing Complete, and so any programming language that is Turing Complete can be simulated using $\lambda$-Calculus.  
+    \par Okay, now we must learn what exactly $\lambda$-Calculus is. There are 3 rules:
+    
+    \begin{itemize}
+  \item A variable $\mathbf{x}$ is a valid $\lambda$-Calculus term. (We will show what this means quite soon).
+  
+  \item If \textbf{f} is a valid $\lambda$-Calculus term, and $\mathbf{x}$ is a valid variable, then $\boldsymbol{\lambda}\mathbf{x. f}$ is a valid term. (This is called a $\lambda$-abstraction).
+  
+  \item if $\mathbf{f}$ and  $\mathbf{g}$ are lambda terms, then  $\mathbf{(fg)}$ is a valid lambda term. (This is called an application).
+\end{itemize}
+
+Now we get to learn how these rules work with everybody's favorite learning method, examples!
+\item The first rule is about variables, so we will create two variables $\mathbf{x}$ and $\mathbf{y}$. Think of these in terms of math declarations, so if we have a function $f(\mathbf{x})$ then the $\mathbf{x}$ we just created will be the variable that $f$ is acting upon. Similarly for the variable $\mathbf{y}$ in the function $g(\mathbf{y})$.
+
+\item Now onto the second rule about $\lambda$-abstractions. Directly above we just created these two variables $x$ and $y$ but we never actually created the functions $f$ and $g$. Well what good are variables if nothing is using them. Insert $\lambda$-abstractions, the $f$ in the rule definition is essentially a function, and so $\lambda x.f$ is the function $\mathbf{f}$ acting upon the variable $\mathbf{x}$. 
+\begin{center}
+$\lambda x.f$ $\quad$ $\Rightarrow$ $\quad$ $f(x)$ 
+\end{center}
+
+\item Now for the final rule. This rule is a bit more involved than it appears. So this means more examples. It says that if we have valid terms $f$ and $g$ then $(fg)$ is also a valid $\lambda$ term, but to me its name gives a better intuition for this rule. The name for this is an \textbf{application}, and that is because we are taking our valid term $f$ and applying it with the specific input $g$. Think of this like the function $f(x) = x^2$ evaluated at a specific input, say $x=4$. Then this becomes $f(4) = 4^2$. This will make more sense after a few examples:
+\begin{itemize}
+\item Take the $\lambda$-abstraction $\lambda x.x + x$. This is a function that takes a variable $x$ and returns $x+x$ or $2x$. Then the application of this abstraction with the variable $y$ would take $x$ and substitute in the variable $y$. This is illustrated by: 
+\begin{center}
+$(\lambda x.x + x)y$ $\quad$ $\rightarrow$ $\quad$ $f(x) = 2x$ $\quad$ $\rightarrow$ $\quad$ $f(y) = 2y$
+\end{center}
+\item You can apply lambda functions with more than just variables too. Take the $\lambda$-abstraction $\lambda x.x$ $x$. We can apply this with many different abstractions, but for now lets apply it with itself. 
+\begin{center}$(\lambda x.x$ $x)$ $(\lambda x.x$ $x)$ $\quad$ $\rightarrow$ $\quad$ $(\lambda x.x$ $x)$ $[x := (\lambda x.x$ $x)]$
+\end{center}
+\begin{center}
+$= \quad (\lambda x.x$ $x)$ $(\lambda x.x$ $x)$
+\end{center}
+This is an interesting example because we can see with an application such as this, the application never reduces or simplifies. We will discuss applications like this later.
+\item The last example shall serve as a segue into our next topic that we must learn for our ultimate goal of understanding combinators. Take the application $(\lambda x. y)z$. \par This is an abstraction that takes a variable $x$ and returns the variable $y$. In lambda calculus, there is no such thing as variable declaration, i.e. we don't know explicitly what $x$ or $y$ are, but we do know that this given abstraction does not use the $x$ variable, because it always just returns this unknown $y$ variable. 
+\begin{center}
+$(\lambda x.y)(z)$ $\quad = \quad$ $(\lambda x.y)[x:=z]$ $\quad \Rightarrow \quad$ $f(x) = y$ $\quad \rightarrow \quad$ $f(z) = y$
+\end{center}
+\end{itemize}
+
+\item In the last application example we dealt with this unknown $y$ variable. Variables that are "unknown" in a $\lambda$-abstraction are referred to as \textbf{free} variables, while variables such as $x$ in $\lambda x. 2x$ are referred to as \textbf{bound} variables. The abstraction $\lambda x. x + y$ has free variable $y$ and bound variable $x$. \par Free variables can be defined more formally in a similar manner to our $\lambda$-Calculus definition.
+\begin{itemize}
+\item The set of free variables in the variable $x$ is just $x$. (This is a little weird but from our above definitions we can see that $x$ by itself is not bound by anything.)
+\item The set of free variables in $\lambda x.f$ is the set of free variables in $f$ except $x$. Hence if $f = w x y z$ then the set of free variables is $\{w,y,z\}$ since $x$ is bound by this lambda definition.
+\item The set of free variables in the application $fg$ is the union of free variables of $f$ and $g$. For example if $f = \lambda x.x\,w$ and $g = \lambda y.x\,w$ then the set of free variables in $f$ is $w$ and for $g$ it is $x,w$ so the resulting set is the union of these which is$\{x,w\}$. 
+\end{itemize}
+
+\item Moving forwards we are almost at our goal of learning combinators. We just need to learn one more concept, $\boldsymbol{\beta}$\textbf{-Reduction}. We already used $\beta$-Reduction slightly above in the second application example of $(\lambda x.x\,x) (\lambda x.x\,x)$. Essentially $\beta$-Reduction is given a series of abstractions and application, reducing this series to it's simplest form. Relating to math, if we have functions $f(x) = x$, $g(x) = x^2$, and $h(x) = x$ then $f(g(h(x))) = f(g(x)) = f(x^2) = x$. The function composition $f\circ g \circ h = x^2$ in a sense $\beta$-reduces to a function say, $\phi$, where $\phi(x) = x^2$. Going back to our $\lambda$ expressions here are a few step-by-step examples.
+\begin{itemize}
+\item 
+	\begin{align*}
+	(\lambda x. x\,y)(\lambda y.x) &= (\lambda 		x. x\,y)[x:=\lambda y.x]\\
+ 	&= (\lambda y.x)(y)\\
+ 	&= x
+	\end{align*}
+\item 
+	\begin{align*}
+	\big[\lambda x. (\lambda y. x y) y\big]			(\lambda x.x) &= (\lambda x. (\lambda y. x 		y) y)[x:= \lambda x.x]\\
+ 	&= [\lambda y.(\lambda x.x)](y)\\
+ 	&= \lambda y. (\lambda x.x)
+\end{align*}
+\item \begin{align*}
+	(\lambda x.x\,x) (\lambda x.x\,x) &= 			(\lambda x.x\,x)[x:=\lambda x.x\,x]]\\
+	&= (x[x:= \lambda x.x\,x])(x[x:=\lambda 			x.x\,x]) \\
+ 	&= (\lambda x.x\,x)(\lambda x.x\,x)
+	\end{align*}
+\end{itemize}
+We saw earlier how this application never stops, or never reduces. $\lambda$-expressions are not guaranteed to reduce. We can think about this in a programming sense as non-terminating recursion. In this view we also see that each step of $\beta$-reduction can be interpreted as a step of computation. The motivation behind $\beta$-reduction is that it shows that some $\lambda$ expressions are equivalent, such as the earlier example with function $\phi(x)$ being equivalent to $g(x)$.
+
+\item Well we are finally here! We now have all the necessary knowledge to formally learn about combinators. \textbf{Combinators} are functions that possess only bound variables. Combinators do not have free variables. These functions produced a field of study called Combinatory Logic. An interesting fact about $\lambda$-Calculus is that although every lambda function is created by means of abstraction and application, abstraction is not required. Because of this fact, a similar calculus called combinatorial calculus was created. This calculus is computationally equivalent to $\lambda$-Calculus and thus Turing Complete, but only relies on combinators for means of computation. There are many different important combinators that we will now discuss.
+\begin{itemize}
+\item The identity combinator, $\mathbf{I}$. $\lambda x.x$. If we apply this combinator with any term $t$ then we get $t$ back. This combinator is usually denoted as $I x = x$ or $I(x) = x$.
+\item The next combinator is the constant combinator, $\mathbf{K}$. $\mathbf{K} = \lambda x.(\lambda y.x)$. This combinator takes two arguments $x$ and $y$, and returns $x$ regardless of what the argument $y$ is. This is why it is referred to as the constant combinator. For all terms $x$ and $y$ in the lambda calculus, $\mathbf{K}\,x\,y = x$ or in alternative notation $\mathbf{K}(x,y) = x$.
+\item The third combinator that we will cover is the substitution combinator, $\mathbf{S} = \lambda x.[\lambda y.[\lambda z.(xz)(yz)]]$. This combinator takes three arguments,$x,y,z$, and begins by applying the first two arguments with the third and then combines these two results. We need this combinator to make up for the lack of the abstraction tool in our combinatorial calculus. ????NOT SURE IF THIS IS TRUE THIS IS JUST A GUESS(need to check with fontaine)???? The reason why \textbf{S} is able to help us is that our current calculus is left associative, but certain computations require right associativity. Without \textbf{S} we could attempt to create the result of this combinator with just $xzyz$, but by association this would become $(((xz)y)z)$.
+\item We can solve this abstraction issue with different combinators though. Consider X(X(X(XX))) = X(X(X[(((xS)KS)K)]
+[((((XS)KS)KS)KS]K
+
+\item
+\begin{center}
+
+
+\end{center}
+\end{itemize}
+
+
+\end{enumerate}
+
+
+\end{document}
