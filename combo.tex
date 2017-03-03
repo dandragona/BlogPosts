@@ -41,7 +41,7 @@ $\lambda x.f$ $\quad$ $\Rightarrow$ $\quad$ $f(x)$
 
 \item Now for the final rule. This rule is a bit more involved than it appears. So this means more examples. It says that if we have valid terms $f$ and $g$ then $(fg)$ is also a valid $\lambda$ term, but to me its name gives a better intuition for this rule. The name for this is an \textbf{application}, and that is because we are taking our valid term $f$ and applying it with the specific input $g$. Think of this like the function $f(x) = x^2$ evaluated at a specific input, say $x=4$. Then this becomes $f(4) = 4^2$. This will make more sense after a few examples:
 \begin{itemize}
-\item Take the $\lambda$-abstraction $\lambda x.x + x$. This is a function that takes a variable $x$ and returns $x+x$ or $2x$. Then the application of this abstraction with the variable $y$ would take $x$ and substitute in the variable $y$. This is illustrated by: 
+\item Take the $\lambda$-abstraction $\lambda x.x + x$. This is a function that takes a variable $x$ and returns $x+x$ or $2x$. Then the application of this abstraction with the variable $y$ would take $x$ and substitute in the variable $y$ (this is denoted by $x:=y$ or "x defined to be y"). Now this application is illustrated by: 
 \begin{center}
 $(\lambda x.x + x)y \ = \ (x + x)[x:=y] \ = \ y + y$
 \vspace{3mm}
