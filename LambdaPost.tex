@@ -135,6 +135,26 @@ So the result of the first step of $\beta$-reduction is the partial application 
 (\lambda y.\,m+y)(n)	&= (m + y)[y:=n]\\
 	&= m + n
 \end{align*}
+
+\bigskip
+
+Here are some examples of using the lambda calculus in order to do simple computations:
+
+\begin{align*}
+3 + 5 &= (\lambda mn.m(m(m(n)))) (\lambda pqr.q(pqr)) (\lambda xy.x(x(x(x(x(y))))))
+\end{align*}
+
+and
+
+\begin{align*}
+2 \times 3 &= (\lambda pqr.p(qr)) (\lambda mn.m(m(n))) (\lambda xy.x(x(x(y))))\\
+&= \lambda r.(\lambda mn.m(m(n)))((\lambda xy.x(x(x(y))))r) \\
+&= \lambda rn.((\lambda xy.x(x(x(y))))r)(((\lambda xy.x(x(x(y))))r)(n)) \\
+&= \lambda rn.(\lambda y.r(r(r(y)))) (r(r(r(n)))) \\
+&= \lambda rn.r(r(r(r(r(r(n))))))\\
+&= 6
+\end{align*}
+
 \par
 \textbf{Currying} is the process of taking a function that receives multiple arguments, and reducing this function to a series of functions that take only a single argument. Haskell is naturally currying, and so is $\lambda$-calculus. In the addTwo example we saw how the representative $\lambda$-function handled two arguments. Calling this original function resulted in two functions. The first function took the first argument, and returned a new function that took in a second argument of its own. The second function is able to add this second argument to the bound variable granted to it by the first function. \par Here is another example of currying with a $\lambda$-function.
 $$\lambda x\,y\,z.\, (x * y * z) \quad \equiv \quad \lambda x.\,(\lambda y.\,(\lambda z.\, (x * y * z)))$$ 
