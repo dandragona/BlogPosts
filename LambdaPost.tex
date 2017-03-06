@@ -138,32 +138,101 @@ So the result of the first step of $\beta$-reduction is the partial application 
 
 \bigskip
 
-Here are some examples of using the lambda calculus in order to do simple computations:
 
-\begin{align*}
-3 + 5 &= (\lambda mn.m(m(m(n)))) (\lambda pqr.q(pqr)) (\lambda xy.x(x(x(x(x(y))))))
-\end{align*}
 
-and
-
-\begin{align*}
-2 \times 3 &= (\lambda pqr.p(qr)) (\lambda mn.m(m(n))) (\lambda xy.x(x(x(y))))\\
-&= \lambda r.(\lambda mn.m(m(n)))((\lambda xy.x(x(x(y))))r) \\
-&= \lambda rn.((\lambda xy.x(x(x(y))))r)(((\lambda xy.x(x(x(y))))r)(n)) \\
-&= \lambda rn.(\lambda y.r(r(r(y)))) (r(r(r(n)))) \\
-&= \lambda rn.r(r(r(r(r(r(n))))))\\
-&= 6
-\end{align*}
-
-\par
 \textbf{Currying} is the process of taking a function that receives multiple arguments, and reducing this function to a series of functions that take only a single argument. Haskell is naturally currying, and so is $\lambda$-calculus. In the addTwo example we saw how the representative $\lambda$-function handled two arguments. Calling this original function resulted in two functions. The first function took the first argument, and returned a new function that took in a second argument of its own. The second function is able to add this second argument to the bound variable granted to it by the first function. \par Here is another example of currying with a $\lambda$-function.
 $$\lambda x\,y\,z.\, (x * y * z) \quad \equiv \quad \lambda x.\,(\lambda y.\,(\lambda z.\, (x * y * z)))$$ 
-As we can see \textbf{currying} and \textbf{partial application} are closely resulted, and in a sense currying is made possible by partial application.
+As we can see \textbf{currying} and \textbf{partial application} are closely resulted, and in a partial application is made possible by currying.
+
+\item Now onto some pragmatic uses of $\lambda$-Calculus. We said earlier that Lambda Calculus is a model of computation, but how do we actually do this? We know we can represent functions using lambda calculus, but how can we represent common computation constructs such as booleans or actual numbers? 
+\par We will start with booleans, and more specifically TRUE and FALSE. These are two constant functions:
+$$\textbf{TRUE}\ =\  \lambda xy.\,x\ \quad \ \textbf{FALSE}\ =\  \lambda xy.\,y$$
+
+These TRUE and FALSE functions make more sense in the context of the $\lambda$-Calculus IF statement.
+$$\textbf{IF}\ =\ \lambda b.\,(\lambda t.\,(\lambda f.\, b\, t \,f))$$
+Where $b$ stands for boolean, $t$ is the result if true, and $f$ is the result if false. Well when we call our lambda IF function with a TRUE it returns:
+
+\begin{align*}
+\text{IF TRUE}\  t\, f \quad &= (\lambda b.\,(\lambda x.\, (\lambda y.\, b\,x\,y)))(\text{TRUE})(t)(f)\\
+&= (\lambda x.\, (\lambda y.\, b\,x\,y))[b := \text{TRUE}](t)(f)\\
+&= (\lambda x.\, (\lambda y.\, \text{TRUE}\,x\,y))(t)(f)\\
+&= (\lambda y.\, \text{TRUE}\,x\,y)[x:=t](y)\\
+&= (\lambda y.\, \text{TRUE}\,t\,y)(y)\\
+&= (\text{TRUE}\,t\,y)[y:=f] \\
+&= (\text{TRUE}\,t\,f)\\
+&= (t)
+\end{align*}
+
+Similarly, calling the IF function with FALSE will return (f). 
+\par The next logic operator we will cover is the AND term: $$\textbf{AND } =\  \lambda\, b1\, b2.\, (\text{IF }b1\, b2\text{ FALSE})$$
+We call this with two booleans, b1 and b2. We want to return TRUE if b1 and b2 are both TRUE, otherwise return FALSE. We will show how this works with two examples, a TRUE evaluation and a FALSE evaluation.
+\begin{align*}
+\text{AND TRUE TRUE } &= \text{IF TRUE TRUE FALSE}\\
+&= \text{TRUE TRUE FALSE}\\
+&= (\lambda xy.\, x)(\text{TRUE})(\text{FALSE})\\
+&= (\text{TRUE})
+\end{align*}
+whereas a FALSE evaluation could be either AND FALSE FALSE or AND TRUE FALSE. We will consider AND TRUE FALSE.
+\begin{align*}
+\text{AND TRUE FALSE } &= \text{IF TRUE FALSE FALSE} \\
+&= \text{TRUE FALSE FALSE}\\
+&= (\lambda xy.\, x)(\text{FALSE})(\text{FALSE})\\
+&= (\text{FALSE})
+\end{align*}
+
+The Lambda \textbf{OR} function is $\lambda b1\,b2\,.\,(\text{IF }b1\text{ TRUE }b2)$.\\
+The Lambda \textbf{NOT} is $\lambda b\,.\,(b\text{ FALSE }\text{TRUE})$.\\
 \newline
+We now wish to add numbers and arithmetic operations to our model. Numbers in $\lambda$-Calculus work exactly like the Nat data type we used in Haskell. 
+\begin{align*}
+\text{Zero is defined as }\quad &\lambda sz.\,z\\
+\text{One is defined as }\quad &\lambda sz .\, s\,z\\
+\text{Two is defined as }\quad &\lambda sz. \, s(s\,z)\\
+.\ \quad&.\\
+.\ \quad&.\\
+.\ \quad&.\\
+\text{N is defined as }\quad &\lambda sz.\, s(s(..(s\, z))
+\end{align*}
+Where we can think of the variable $s$ as the successor function, and the variable $z$ as Zero. Now that we have natural numbers, we can create the successor function that takes a natural number $n$, and returns $n+1$. $$S(n) = \lambda nsz.\,s(n\,s\,z)$$
+We can see that whichever natural number $n$ is, $S(n)$ returns $n+1$. \\
+Next on our plate is addition. The add function is defined as 
+$$\textbf{ADD } = \ \lambda mnsz. m\,s\,(n\, s\, z)$$
+Here is an example of how this works. 
+\begin{align*}
+\text{ADD } 2\ 3 &= \lambda mnsz. m\,s\,(n\, s\, z)(2)(3)\\
+&= \lambda nsz.\,m\,s\,(n\,s\,z)[m:=2](3)\\
+&= [\lambda nsz.\,2\,s\,(n\,s\,z)](3)\\
+&= \lambda sz.\,2\,s\,(n\,s\,z)[n:=3]\\
+&= \lambda sz.\,2\,s\,(3\,s\,z)\text{ but 2 is the function}\ \lambda sz. \, s(s\,z)\text{ and so is 3}\\
+&= \lambda sz.\, s(s\,(3\,s\,z))\text{ now we apply the 3 function to get}\\
+&= \lambda sz.\, s(s(s(s(s\,z))))\\
+&= 5
+\end{align*}
+
+The final arithmetic operation we will cover is multiplication.
+$$\textbf{MULT } = \ \lambda mn.\, [m\, (\text{ADD } n)\, 0]$$
+\begin{align*}
+    \text{MULT }2\,3 &=\lambda mn.\, [m\, (\text{ADD } n)\, 0](2)(3)\\
+    &= \lambda n.\, (m\, (\text{ADD } n)\, 0)[m:=2](3)\\
+    &= \lambda n.\, (2\, (\text{ADD } n)\, 0)(3)\\
+    &= (2\,(\text{ADD } n)\, 0)[n:=3]\\
+    &= (2\,(\text{ADD } 3)\, 0)\text{ now applying the 2 function}\\
+    &= (\text{ADD } 3)[(\text{ADD } 3)\,0]\\
+    &= (\text{ADD } 3)(3)\\
+    &= 6
+\end{align*}
+
+
+\begin{center}
+Work Cited
+\end{center}
+
 \begin{itemize}
 \item Hindley, J. Roger, and Jonathan P. Seldin. "Lambda-Calculus and Combinators, an Introduction." (2008): n. pag. Web.
 \item Tromp, John. "Binary Lambda Calculus and Combinatory Logic." Randomness and Complexity, From Leibniz to Chaitin (2007): 237-60. Web.
 \item Berendregt, H. P. The Lambda Calculus: Its Syntax and Semantics. Amsterdam: North-Holland, 1985. Web.
+\item Machado, Rodrigo. "An Introduction to Lambda Calculus and Functional Programming." 2013 2nd Workshop-School on Theoretical Computer Science (2013): n. pag. Web.
+
 \end{itemize}
 \end{enumerate}
 
